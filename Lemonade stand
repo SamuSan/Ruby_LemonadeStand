@@ -1,0 +1,16 @@
+Lemonade stand!
+
+Beginning of day:
+ - buy lemons (variable price, 25-50 cents each)
+ - buy sugar  (variable price, 2-5 cents 'each')
+ - you need 1 lemon and 1 sugar to make a cup of lemonade
+ - make some cups of lemonade (user determines how many)
+ - set a price for your lemonade
+
+Day plays out:
+ - temperature selected (should be related to previous day's)
+ - number of people who walk past the stand is calculated based on temp
+ - number of cups sold calculated based on number of people + price
+
+End of day:
+ - show user profit/loss
