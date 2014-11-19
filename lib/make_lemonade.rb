@@ -12,8 +12,7 @@ class MakeLemonade
 
   def call
     if @inventory.can_provide_ingredients?(@lemons, @sugar)
-      @inventory.decrease_sugar_stock_level(@sugar)
-      @inventory.decrease_lemons_stock_level(@lemons)
+      @inventory.decrease_stock_levels(lemons: @lemons, sugar: @sugar)
       @inventory.increase_lemonade_stock_level(number_of_cups: @number_of_cups)
     else
       false

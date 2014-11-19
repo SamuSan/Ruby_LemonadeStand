@@ -47,6 +47,11 @@ class Inventory
     @cups_of_lemonade += number_of_cups
   end
 
+  def decrease_stock_levels(lemons:, sugar:)
+    decrease_sugar_stock_level(sugar)
+    decrease_lemons_stock_level(lemons)
+  end
+
   private
 
   def sufficient_lemons?(lemon_to_be_used)
