@@ -1,9 +1,11 @@
 require 'inventory'
 
 describe Inventory do
-  let(:some_number) { double }
-  let(:market)      { Market.new }
-  let(:inventory)   { Inventory.new(market) } 
+  let(:some_number)   { double }
+  let(:market)        { Market.new }
+  let(:inventory)     { Inventory.new(market) }
+  let(:recipe)        { Recipe.new(lemons_per_cup:1, sugar_per_cup:1) } 
+  let(:make_lemonade) { MakeLemonade.new(inventory: inventory,recipe: recipe, number_of_cups: 1) } 
 
   describe "initialize" do
     it "creates and empty Inventory with no lemons " do
@@ -22,7 +24,7 @@ describe Inventory do
     end
 
     it "purchases lemons and reflects that in the available balance" do
-      expect(market).to receive(:price_of_lemons).and_return(20)
+      expect(market).to receive(:price_of_lemons).at_least(:once).and_return(20)
       inventory.purchase_lemons(10)
       expect(inventory.send(:available_cash_balance)).to eq 800
     end
@@ -53,46 +55,45 @@ describe Inventory do
     end
   end
 
-  describe "make_lemonade" do
-    before do
-      inventory.purchase_lemons(10)
-      inventory.purchase_sugar(10) 
-    end
 
-    it "makes n cups of lemonade" do
-      inventory.make_lemonade(5)
-      expect(inventory.cups_of_lemonade).to eq 5
-    end
 
-    it "removes exactly one lemon for each cup made" do
-      inventory.make_lemonade(10)
-      expect(inventory.lemons_in_stock).to eq 0
-    end
+  describe "#price_per_cup" do
+    subject {inventory.price_per_cup}
 
-    it "removes exactly one sugar for each cup made" do
-      inventory.make_lemonade(10)
-      expect(inventory.sugar_in_stock).to eq 0
-    end
-
-    it "makes no cups if there is no stock available" do
-      inventory.make_lemonade(10)
-      inventory.make_lemonade(10)
-      expect(inventory.cups_of_lemonade).to eq 10
-    end
-  end
-
-  describe "price_per_cup" do
-    it "sets the price per cup of lemonade" do
-      inventory.decide_price_per_cup(5)
-      expect(inventory.price_per_cup).to eq 5
-    end
-    context "stock has been purchased, lemonade made and price set" do
-      it "increments the available_cash_balance by the price when a cup is sold" do
+    context "when the price has been set by the user" do
+      before do
         inventory.decide_price_per_cup(5)
-        expect(inventory.price_per_cup).to eq 5
-
-        expect(inventory.send(:available_cash_balance)).to eq 800
       end
+
+      it {is_expected.to be 5}
+    end
   end
+
+  describe "#available_cash_balance" do
+    before do 
+        expect(market).to receive(:price_of_sugar).at_least(:once).and_return(20)
+        expect(market).to receive(:price_of_lemons).at_least(:once).and_return(20)
+        inventory.purchase_sugar(1)
+        inventory.purchase_lemons(1)
+        make_lemonade.call
+        inventory.decide_price_per_cup(5)
+    end
+    subject {inventory.available_cash_balance}
+
+    context "when a cup of lemonade has been sold" do
+      before do
+        inventory.sell_cup_of_lemonade
+      end
+
+      it {is_expected.to be 965}
+    end
+
+    context "when a cup of lemonade has been sold with no available stock" do
+      before do
+        2.times { inventory.sell_cup_of_lemonade } 
+      end
+
+      it {is_expected.to be 965}
+    end
   end
 end
