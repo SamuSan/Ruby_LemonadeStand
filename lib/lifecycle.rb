@@ -1,11 +1,13 @@
 class Lifecycle
-  attr_reader :day
+  def initialize(first_day:)
+    @day = first_day
+  end
 
-  def initialize(day:)
-    @day = day
+  def current_temperature
+    @day.temperature  
   end
 
   def cycle_one_day
-    @day.decide_todays_weather(temperature_yesterday: @day.temperature)
+    @day.decide_todays_weather
   end
 end

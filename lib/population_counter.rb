@@ -1,10 +1,10 @@
 class PopulationCounter
-  def initialize(day:)
-    HUMANS_PER_DEGREE = 1
+  HUMANS_PER_DEGREE = 1
+
+  def initialize(temperature:)
     @foot_traffic =  calculate_foot_traffic(day)   
   end
 
-  def calculate_foot_traffic(day:)
+  def calculate_foot_traffic(temperature:)
     
   end
-end

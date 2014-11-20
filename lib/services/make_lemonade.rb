@@ -1,5 +1,3 @@
-require_relative 'recipe'
-
 class MakeLemonade
   def initialize(inventory:, recipe: nil, number_of_cups:)
     recipe ||= Recipe.new(lemons_per_cup: 1, sugar_per_cup: 1)

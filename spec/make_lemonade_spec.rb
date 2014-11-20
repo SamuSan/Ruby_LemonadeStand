@@ -1,6 +1,5 @@
-require 'make_lemonade'
-require 'recipe'
-
+require_relative '../lib/services/make_lemonade'
+require_relative '../lib/recipe'
 describe MakeLemonade do
   let(:market)      { Market.new }
   let(:inventory)   { Inventory.new(market) }
@@ -16,8 +15,8 @@ describe MakeLemonade do
 
   describe "call" do
     before do
-      inventory.purchase_lemons(10)
-      inventory.purchase_sugar(10) 
+      PurchaseLemons.new(inventory: inventory, number_to_buy: 10).call
+      PurchaseSugar.new(inventory:inventory, number_to_buy: 10).call
     end
 
     it "makes n cups of lemonade" do
@@ -37,7 +36,7 @@ describe MakeLemonade do
 
     it "makes no cups if there is no stock available" do
       make_lemonade.call
-      make_lemonade.call
+      make_lemonade.call #second call expected to do nothing as stock exhausted
       expect(inventory.cups_of_lemonade).to eq 10
     end
   end
