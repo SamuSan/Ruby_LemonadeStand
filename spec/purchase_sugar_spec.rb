@@ -22,7 +22,7 @@ describe PurchaseSugar do
     it "purchases sugar and reflects that in the available balance" do
       expect(market).to receive(:price_of_sugar).at_least(:once).and_return(20)
       purchase_sugar.call
-      expect(inventory.send(:available_cash_balance)).to eq 800
+      expect(inventory.send(:cash_float)).to eq 800
     end
     
     it "does not allow a sugar purchase when the available balance is insufficient" do

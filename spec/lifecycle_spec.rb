@@ -1,13 +1,30 @@
 require 'lifecycle'
 
 describe Lifecycle do
-  let(:day)       { Day.new(temperature_generator: TemperatureGenerator.new) }
-  let(:lifecycle) { Lifecycle.new(first_day: day) }
+  let(:lifecycle) { Lifecycle.new }
+  let(:day)       { instance_double("Day") }
 
-  describe "cycle_one_day" do
-    it "changes the days weather relative to yesterdays weather" do
-      expect(day).to receive(:decide_todays_weather).and_return(18)
-      lifecycle.cycle_one_day
+  describe "initialize" do
+    it "creates a new lifecycle with no days" do
+      expect(lifecycle.days).to be_empty
+    end  
+  end
+
+  describe "#add_day_to_lifecycle" do
+    it "adds a day to the lifecycle" do
+      lifecycle.add_day_to_lifecycle(day: day)
+      expect(lifecycle.days.size).to be 1
+    end
+  end
+
+  describe "#calculate_game_result" do
+    before do 
+      expect(day).to receive(:profit).exactly(30).times.and_return(100)
+      30.times { lifecycle.add_day_to_lifecycle(day: day) }
+    end
+
+    it "calculate the total profit for a whole game" do
+      expect(lifecycle.calculate_game_result).to be 3000
     end
   end
 end

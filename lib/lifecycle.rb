@@ -1,13 +1,15 @@
 class Lifecycle
-  def initialize(first_day:)
-    @day = first_day
+  attr_accessor :days
+
+  def initialize
+    @days = []
   end
 
-  def current_temperature
-    @day.temperature  
+  def add_day_to_lifecycle(day:)
+    @days.push(day)
   end
 
-  def cycle_one_day
-    @day.decide_todays_weather
+  def calculate_game_result
+    @days.map { |day| day.profit }.reduce { |sum, profit| sum + profit }
   end
 end

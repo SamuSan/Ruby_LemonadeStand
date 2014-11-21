@@ -1,11 +1,11 @@
 class Inventory
-  INITAL_CASH_BALANCE = 1000
+  INITIAL_CASH_BALANCE = 1000
   
-  attr_reader :lemons_in_stock, :sugar_in_stock, :cups_of_lemonade, :price_per_cup, :available_cash_balance
-
+  attr_reader :lemons_in_stock, :sugar_in_stock, :cups_of_lemonade, :price_per_cup
+  attr_accessor :cash_float
   def initialize(market)
     @market = market
-    @available_cash_balance = INITAL_CASH_BALANCE
+    @cash_float = INITIAL_CASH_BALANCE
     @lemons_in_stock  = 0
     @sugar_in_stock   = 0 
     @cups_of_lemonade = 0
@@ -14,13 +14,6 @@ class Inventory
   def purchase_stock(item_to_buy:, number_to_buy:)
     item_to_buy == :lemons ? purchase_lemons(number_to_buy) : purchase_sugar(number_to_buy)
   end
-
-  # def sell_cup_of_lemonade
-  #   if have_cup_to_sell?
-  #     @available_cash_balance += @price_per_cup
-  #     @cups_of_lemonade -= 1
-  #   end 
-  # end
 
   def can_provide_ingredients?(lemons, sugar)
     sufficient_lemons?(lemons)  && sufficient_sugar?(sugar)
@@ -32,7 +25,6 @@ class Inventory
 
   def decrease_lemonade_stock_level
     if have_cup_to_sell?
-      @available_cash_balance += @price_per_cup
       @cups_of_lemonade -= 1
     end 
   end
@@ -46,7 +38,7 @@ class Inventory
 
   def purchase_lemons(number_of_lemons)
     if can_make_purchase?(number_of_lemons, @market.price_of_lemons)
-      @available_cash_balance -= number_of_lemons * @market.price_of_lemons
+      @cash_float -= number_of_lemons * @market.price_of_lemons
       @lemons_in_stock += number_of_lemons
     else
       false
@@ -55,7 +47,7 @@ class Inventory
 
   def purchase_sugar(amount_of_sugar)
     if can_make_purchase?(amount_of_sugar, @market.price_of_sugar)
-      @available_cash_balance -= amount_of_sugar * @market.price_of_sugar
+      @cash_float -= amount_of_sugar * @market.price_of_sugar
       @sugar_in_stock += amount_of_sugar
     else
       false
@@ -83,6 +75,6 @@ class Inventory
   end
 
   def can_make_purchase?(number_of_items, price)
-    @available_cash_balance - (number_of_items * price) >= 0
+    @cash_float - (number_of_items * price) >= 0
   end
 end

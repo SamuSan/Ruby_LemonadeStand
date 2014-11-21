@@ -1,17 +1,15 @@
 class Day
-#price
-#climate / temperature
+#price#
+#climate / temperature#
 #people
 #sales
-#profit
-  attr_accessor :price_per_cup
-  attr_reader :climate
+#turn_over  
+  attr_accessor :price_per_cup, :turn_over, :profit
+  attr_reader :climate, :foot_traffic
 
-  def initialize(temperature_generator:)
+  def initialize(temperature_generator:, foot_traffic_generator:)
+    @turn_over = 0
     @climate = temperature_generator.next
-  end
-
-  def method_name
-    
+    @foot_traffic = foot_traffic_generator.calculate_foot_traffic(temperature: @climate)
   end
 end
