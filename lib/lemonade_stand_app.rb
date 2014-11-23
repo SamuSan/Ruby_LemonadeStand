@@ -12,7 +12,7 @@ attr_reader :lifecycle
   def initialize
     @today = Day.new(TemperatureGenerator.new) 
     @lifecycle = Lifecycle.new(first_day: @today)
-    @user_interface = UserInterface.new(lemonade_stand_app: self)
+    @user_interface = UserInterface.new
     @market = Market.new
     @inventory = Inventory.new(@market)
   end
@@ -22,21 +22,26 @@ attr_reader :lifecycle
   end
 
   def play_one_round
-          #Give the wether report
-      @user_interface.give_weather_report
-      #Tell the user the daily stock prices at the market
+    #Give the wether report
+    @user_interface.give_weather_report(@lifecycle.todays_temperature)
+    #Tell the user the daily stock prices at the market
 
-      #ASk the user for their stock order
-      #Purchase stock
-      PurchaseLemons.new(@inventory, @user_interface.ask_for_lemons_order)
-      PurchaseSugar.new(@inventory, @user_interface.ask_for_sugar_order)
+    #ASk the user for their stock order
+    #Purchase stock
+    PurchaseLemons.new(@inventory, @user_interface.ask_for_lemons_order)
+    PurchaseSugar.new(@inventory, @user_interface.ask_for_sugar_order)
 
-      #ask the user to decide the price for cup of lemonade
-      #set the cup price
-      @inventory.decide_price_per_cup(@user_interface.ask_user_for_lemonade_price)
-      #Advance one day
-      @lifecycle.cycle_one_day
-      #Show the profit / loss
+    #ask the user to decide the price for cup of lemonade
+
+    #set the cup price
+    @inventory.decide_price_per_cup(@user_interface.ask_user_for_lemonade_price)
+    #Advance one day
+    @lifecycle.cycle_one_day
+    #Show the profit / loss
+  end
+
+  def report_todays_weather
+    @lifecycle.todays_temperature
   end
 end
 

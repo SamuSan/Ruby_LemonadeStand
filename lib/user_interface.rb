@@ -1,9 +1,12 @@
 require_relative 'message_template'
 class UserInterface
 
-  def initialize(lemonade_stand_app:)
+  def initialize
     @message_template = Message_template.new
-    @lemonade_stand_app = lemonade_stand_app
+  end
+
+  def show_user_market_prices(lemon_price:, sugar_price:)
+    puts @message_template.show_user_market_prices(lemon_price:lemon_price, sugar_price:sugar_price)
   end
 
   def ask_for_lemons_order
@@ -21,7 +24,7 @@ class UserInterface
     gets.chomp
   end
 
-  def give_weather_report
-    puts @message_template.weather_report(@lemonade_stand_app.lifecycle.todays_temperature)
+  def give_weather_report(todays_temperature)
+    puts @message_template.weather_report(todays_temperature)
   end
 end

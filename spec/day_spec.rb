@@ -30,6 +30,9 @@ describe Day do
     end
   end
 
+
+  
+
   describe "#cash_float" do
     before do 
         expect(market).to receive(:price_of_sugar).at_least(:once).and_return(20)

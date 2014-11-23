@@ -16,6 +16,10 @@ describe Inventory do
       expect(inventory.lemons_in_stock).to be 0
     end
 
+    it "creates and empty Inventory with no sugar " do
+      expect(inventory.sugar_in_stock).to be 0
+    end
+
     it "creates and empty Inventory no cups of lemonade" do
       expect(inventory.cups_of_lemonade).to be 0
     end

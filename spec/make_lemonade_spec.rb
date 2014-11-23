@@ -6,13 +6,6 @@ describe MakeLemonade do
   let(:recipe)      { Recipe.new(lemons_per_cup:1, sugar_per_cup:1) } 
   let(:make_lemonade) { MakeLemonade.new(inventory: inventory, recipe: recipe, number_of_cups: 10) } 
 
-  describe "initialize" do
-    pending "cos this is kinda shitty"
-    it "creates a new lemonade maker with the given recipe" do
-
-    end
-  end
-
   describe "call" do
     before do
       PurchaseLemons.new(inventory: inventory, number_to_buy: 10).call
@@ -35,8 +28,7 @@ describe MakeLemonade do
     end
 
     it "makes no cups if there is no stock available" do
-      make_lemonade.call
-      make_lemonade.call #second call expected to do nothing as stock exhausted
+      2.times { make_lemonade.call } 
       expect(inventory.cups_of_lemonade).to eq 10
     end
   end
